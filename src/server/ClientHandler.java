@@ -4,6 +4,7 @@ import utils.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.time.LocalDateTime;
 
 public class ClientHandler implements Runnable {
 
@@ -18,11 +19,11 @@ public class ClientHandler implements Runnable {
 
         try (
 
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(socket.getInputStream())
-                );
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                OutputStream output = socket.getOutputStream()
+                OutputStream output =
+                        socket.getOutputStream()
 
         ) {
 
@@ -32,11 +33,49 @@ public class ClientHandler implements Runnable {
                 return;
             }
 
-            Logger.log("Request: " + request.getMethod() + " " + request.getPath());
+            String path = request.getPath();
 
-            String filePath = "public" + request.getPath();
+            Logger.log("Request: " + request.getMethod() + " " + path);
 
-            if (request.getPath().equals("/")) {
+            /* ---------------- API ROUTES ---------------- */
+
+            if (path.equals("/api/time")) {
+
+                String json =
+                        "{ \"time\": \"" + LocalDateTime.now() + "\" }";
+
+                String response =
+                        "HTTP/1.1 200 OK\r\n" +
+                        "Content-Type: application/json\r\n\r\n" +
+                        json;
+
+                output.write(response.getBytes());
+                output.flush();
+
+                return;
+            }
+
+            if (path.equals("/api/status")) {
+
+                String json =
+                        "{ \"status\": \"Server running\" }";
+
+                String response =
+                        "HTTP/1.1 200 OK\r\n" +
+                        "Content-Type: application/json\r\n\r\n" +
+                        json;
+
+                output.write(response.getBytes());
+                output.flush();
+
+                return;
+            }
+
+            /* ---------------- STATIC FILES ---------------- */
+
+            String filePath = "public" + path;
+
+            if (path.equals("/")) {
                 filePath = "public/index.html";
             }
 
