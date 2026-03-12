@@ -1,48 +1,56 @@
 # Multithreaded Java Web Server
 
 A lightweight **HTTP web server built from scratch using Java sockets and multithreading**.
-This project demonstrates how web servers handle **client requests, parse HTTP messages, and serve static content concurrently**.
 
-The server supports multiple client connections using a **thread pool architecture**, parses HTTP requests, and serves static files such as HTML and CSS.
+This project demonstrates how web servers handle **client requests, parse HTTP messages, serve static content, and process API routes concurrently using a thread pool**.
+
+The server also supports **basic REST-style API endpoints, request logging, and benchmarking for concurrent performance testing**.
 
 ---
 
-## 🚀 Features
+# 🚀 Features
 
 * Custom HTTP server implementation using **Java sockets**
 * **Multithreaded request handling** using a thread pool
 * HTTP request parsing (method, path, headers)
 * Static file serving (HTML, CSS)
-* Basic **logging system**
+* REST-style API endpoints
+* Request logging system (`server.log`)
 * Error handling for **404 Not Found**
-* Simple modular architecture
+* Performance benchmarking support
+* Modular project architecture
 
 ---
 
-## 🏗 Architecture
+# 🏗 Architecture
 
 ```
-Browser
-   ↓
-ServerSocket (Port 8080)
-   ↓
-Thread Pool
-   ↓
-ClientHandler
-   ↓
-HttpParser
-   ↓
-Static File Response
+Client (Browser)
+        ↓
+    ServerSocket
+        ↓
+   Thread Pool
+        ↓
+   ClientHandler
+        ↓
+     HttpParser
+        ↓
+ Route Handler / Static Files
+        ↓
+    HTTP Response
 ```
 
-The server listens for incoming connections and assigns each request to a **worker thread** from the thread pool.
+Each client request is handled by a **separate worker thread** from the thread pool.
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```
-multithreaded-web-server
+multithreaded-java-web-server
+│
+├── benchmark
+│   └── benchmark-test.txt
 │
 ├── public
 │   ├── index.html
@@ -57,37 +65,88 @@ multithreaded-web-server
 │   └── utils
 │       └── Logger.java
 │
-└── README.md
+├── assets
+│   ├── server-homepage.png
+│   ├── api-time-response.png
+│   ├── api-status-response.png
+│   ├── terminal-server-running.png
+│   └── benchmark-test.png
+│
+├── server.log
+├── README.md
+└── .gitignore
 ```
 
 ---
 
-## ⚙️ How It Works
+# 🌐 Supported Routes
 
-1. The server starts and listens on **port 8080**.
-2. When a client connects, the request is assigned to a **thread from the thread pool**.
-3. The request is parsed using the `HttpParser`.
-4. The server determines the requested file path.
-5. If the file exists → return **200 OK** with file content.
-6. If the file does not exist → return **404 Not Found**.
+| Route         | Description                 |
+| ------------- | --------------------------- |
+| `/`           | Homepage                    |
+| `/style.css`  | Static CSS file             |
+| `/api/time`   | Returns current server time |
+| `/api/status` | Returns server status       |
+
+Example response:
+
+```
+GET /api/time
+
+{
+  "time": "2026-03-12T20:10:11"
+}
+```
 
 ---
 
-## ▶️ Running the Server
+# 🖥 Screenshots
 
-### 1. Compile the project
+## Homepage
+
+![Homepage](assets/server-homepage.png)
+
+---
+
+## API Time Endpoint
+
+![API Time](assets/api-time-response.png)
+
+---
+
+## API Status Endpoint
+
+![API Status](assets/api-status-response.png)
+
+---
+
+## Server Running in Terminal
+
+![Terminal](assets/terminal-server-running.png)
+
+---
+
+## Benchmark Test
+
+![Benchmark](assets/benchmark-test.png)
+
+---
+
+# ⚙️ Running the Server
+
+## 1. Compile the project
 
 ```
 javac -d out src/server/*.java src/utils/*.java
 ```
 
-### 2. Run the server
+## 2. Run the server
 
 ```
 java -cp out server.HttpServer
 ```
 
-### 3. Open in browser
+## 3. Open in browser
 
 ```
 http://localhost:8080
@@ -95,41 +154,62 @@ http://localhost:8080
 
 ---
 
-## 📸 Example Output
-![output](image.png)```
-Multithreaded Java Web Server
-This page is served by a custom HTTP server built using Java sockets.
+# 📊 Performance Benchmark
+
+The server was tested using **Apache Benchmark**.
+
+Command used:
+
 ```
+ab -n 1000 -c 50 http://localhost:8080/
+```
+
+Example results:
+
+```
+Concurrency Level:      50
+Time taken for tests:   2.34 seconds
+Complete requests:      1000
+Failed requests:        0
+Requests per second:    426.3 [#/sec]
+```
+
+This demonstrates the server’s ability to **handle multiple concurrent requests efficiently using a thread pool architecture**.
 
 ---
 
-## 🧠 Concepts Demonstrated
+# 🧠 Concepts Demonstrated
 
 * Socket programming
 * HTTP protocol basics
 * Multithreading
 * Thread pool management
-* File I/O
-* Backend server architecture
+* Backend request routing
+* Static file serving
+* Logging systems
+* Performance benchmarking
 
 ---
 
-## 🔧 Future Improvements
+# 🔮 Future Improvements
+
+Possible improvements for this server:
 
 * Support for **HTTP POST requests**
-* Add **REST API routes**
-* Implement **request logging to files**
-* Add **MIME type detection**
-* Implement **basic caching**
-* Add **performance benchmarking**
+* Add **JSON request parsing**
+* Implement **middleware support**
+* Add **file caching**
+* Implement **HTTPS support**
+* Add **dynamic routing**
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
-**Sahil**
+**Sahil Singh**
 
 B.Tech Information Technology
 Galgotias College of Engineering and Technology
 
-GitHub: https://github.com/sahilsingh78
+GitHub:
+https://github.com/sahilsingh78
