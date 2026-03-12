@@ -1,0 +1,21 @@
+Apache Benchmark Test
+
+Server URL:
+http://localhost:8080
+
+Example command:
+
+ab -n 1000 -c 50 http://localhost:8080/
+
+Explanation:
+
+-n = total number of requests
+-c = number of concurrent requests
+
+Example Result:
+
+Concurrency Level:      50
+Time taken for tests:   2.345 seconds
+Complete requests:      1000
+Failed requests:        0
+Requests per second:    426.3 [#/sec]
